@@ -1,0 +1,23 @@
+########### QUESTION 2, Part(a) ###########
+select LastName, FirstName from Member m where m.Coach IS NULL;
+
+
+########### QUESTION 2, Part(b) ###########
+select LastName, FirstName from Member m where m.JoinDate >='2010' and m.JoinDate < '2011';
+
+
+########### QUESTION 2, Part(c) ###########
+select distinct m.LastName, m.FirstName,m.MemberID \
+from Member m inner join Entry e on m.MemberID=e.MemberID \
+where NOT EXISTS \
+(select * from Tournament t inner join Entry e on e.TourID=t.TourID \
+where e.Year='2014' and e.MemberID = m.MemberID);
+
+
+########### QUESTION 2, Part(d) ###########
+select m.LastName, m.FirstName, m.MemberID \
+from Member m  \
+where not exists \
+(select * from Entry e1 where not exists \
+(select * from Entry e2 where e1.Year = e2.Year \
+and e2.MemberID = m.MemberID));
