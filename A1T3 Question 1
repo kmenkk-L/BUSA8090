@@ -1,0 +1,30 @@
+##########  QUESTION 1, Part(a) #############
+curl https://www.staff.hs-mittweida.de/~wuenschi/data/media/compbiolbook/expression.tab > expression.tab
+cat expression.tab
+mysql -u awkologist -p
+use compbiol;
+CREATE TABLE expression (gene VARCHAR(7), expr_value INT);
+exit
+mysqlimport --local -d --ignore-lines=0 -u awkologist -p compbiol expression.tab
+mysql -u awkologisst -p compbiol -e'select * from expression';
+
+
+##########  QUESTION 1, Part(b) #############
+curl https://www.staff.hs-mittweida.de/~wuenschi/data/media/compbiolbook/annotation.tab > annotation.tab
+cat annotation.tab
+mysql -u awkologist -p compbiol
+CREATE TABLE annotation gene VARCHAR(7), function VARCHAR(30), metabolism VARCHAR(30));
+show tables;
+exit;
+mysqlimport --local -d --ignore-lines=0 -u awkologist -p compbiol annotation.tab
+mysql -u awkologist -p compbiol -e'select * from annotation';
+
+
+##########  QUESTION 1, Part(c) #############
+mysql -u awkologist -p compbiol -e'delete from expression where gene="";'
+mysql -u awkologist -p compbiol -e'select * from annotation a inner join expression e on a.gene=e.gene';
+
+
+##########  QUESTION 1, Part(d)ii  #############
+mysql -u awkologist -p compbiol
+select distinct a1.metabolism from annotation a1,annotation a2 where a1.metabolism = a2.metabolism and a1.gene <> a2.gene;
