@@ -6,7 +6,7 @@ use compbiol;
 CREATE TABLE expression (gene VARCHAR(7), expr_value INT);
 exit
 mysqlimport --local -d --ignore-lines=0 -u awkologist -p compbiol expression.tab
-mysql -u awkologisst -p compbiol -e'select * from expression';
+mysql -u awkologist -p compbiol -e'select * from expression'> expression
 
 
 ##########  QUESTION 1, Part(b) #############
@@ -17,7 +17,7 @@ CREATE TABLE annotation gene VARCHAR(7), function VARCHAR(30), metabolism VARCHA
 show tables;
 exit;
 mysqlimport --local -d --ignore-lines=0 -u awkologist -p compbiol annotation.tab
-mysql -u awkologist -p compbiol -e'select * from annotation';
+mysql -u awkologist -p compbiol -e'select * from annotation' > annotation
 
 
 ##########  QUESTION 1, Part(c) #############
