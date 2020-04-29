@@ -1,0 +1,46 @@
+###########  QUESTION 1a  #################
+awk '$2 <1000' expression.tab
+
+
+###########  QUESTION 1b  #################
+cat ah.tab
+grep "ase" ah.tab
+
+###########  QUESTION 1c  #################
+awk '/Purine biosynthesis/,/Pyrimidine biosynthesis/' ah.tab
+
+
+###########  QUESTION 2a  #################
+#In localhost
+scp -i busa8090_s1_2020_44042450.pem world_x.sql ubuntu@ec2-54-252-241-148.ap-southeast-2.compute.amazonaws.com:
+
+#login to ubuntu
+sudo mysql;
+GRANT ALL ON world_x.* TO awkologist@localhost IDENTIFIED BY "awkology";
+Exit;
+mysql -u awkologist -p
+create database world_x;
+show databases;
+source world_x;
+show tables;
+
+
+###########  QUESTION 2b  #################
+select c.Name, cl.percentage,ci.Name \
+from (country c inner join countrylanguage cl on c.Code = cl.CountryCode) \
+inner join city ci on ci.ID=c.Capital \
+where cl.Percentage > 50 and cl.Language = 'English';
+
+
+###########  QUESTION 3  #################
+library(ggplot2)
+country <- c("Germany", "Australia", "China", "Japan", "United Kindom", "US")
+deaths <- c(7.61,0.36,0.33,0.31,32.7,17.84)
+data <- data.frame(y=country,x=deaths)
+ggplot(data=data, mapping=aes(x=deaths, y=country))
++geom_bar(stat='identity',fill='steelblue')
++xlab("deaths per 100,000 pop")
++ylab("country")
++ggtitle("Covid-19 deaths per 100,000 population",subtitle="selected countries, TO 30th April, 2020")
++labs(caption = "Source:Johns Hopkins University, CSSE; PHE/NHS")
+
