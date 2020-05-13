@@ -1,0 +1,90 @@
+---
+title: "BUSA8090, A2T3"
+output:
+  html_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+###Question 2.a
+```{r}
+#load package WDI for dataset and construct wdi_data with two indicators
+library(WDI)
+library(dplyr)
+library(ggplot2)
+library(tibble)
+
+#search for data (CO2 per capita)
+WDIsearch("CO2.*capita")
+
+wdi_data <- WDI(indicator=c("NY.GDP.PCAP.PP.KD","EN.ATM.CO2E.PC"),start=2010,end=2010,extra=TRUE)
+wdi_data = as_tibble(wdi_data)
+
+#rename two indicators:GDPpercap and Emit_CO2percap
+wdi_data <- wdi_data %>%rename(GDPpercap=NY.GDP.PCAP.PP.KD,Emit_CO2percap=EN.ATM.CO2E.PC)
+glimpse(wdi_data)
+```
+
+```{r}
+library(readr)
+write_csv(wdi_data,"wdi_CO2_GDP.csv")
+wdi<- read_csv("wdi_CO2_GDP.csv",col_names = TRUE)
+#Check the summary for CO2percap
+summary(wdi$Emit_CO2percap)
+```
+#visualize data CO2percap with histogram, boxplot
+```{r}
+library(ggplot2)
+library(maps)
+dat_map <- map_data("world")
+
+#map of the world 
+ggplot(dat_map,aes(x=long,y=lat,group=group))+geom_polygon(fill="white",colour="black")
+```
+```{r}
+library(countrycode)
+#make the world bank data can talk to world map data
+dat_map$ccode <- countrycode(dat_map$region,origin="country.name",destination="wb")
+
+#push the world bank dataset into world map dataset
+wdi$ccode <- countrycode(wdi$country,origin="country.name",destination="wb")
+
+#merge two databases
+merged <- full_join(dat_map,wdi,by="ccode")
+
+#plot the data again
+ggplot(merged,aes(x=long,y=lat,group=group,fill=Emit_CO2percap))+geom_polygon()
+```
+
+###Question 2.b
+```{r}
+library(devtools)
+install_github("DougLuke/UserNetR")
+library(UserNetR)
+library(statnet)
+
+mycoords1 <- gplot(Bali,gmode="graph",
+vertex.cex=1.5)
+mycoords2 <- mycoords1
+mycoords2[,2] <- mycoords1[,2]*1.5
+mycoords1
+
+```
+#Question 2.b
+```{r}
+op <- par(mar = c(0,0,0,0))
+plot(Bali,displaylabels=TRUE,label.cex=0.5,
+pad=0.6,label.col="purple")
+par(op)
+```
+#Question 2.c
+```{r}
+rolelab <- get.vertex.attribute(Bali,"role")
+op <- par(mar=c(0,0,0,0))
+plot(Bali,usearrows=FALSE,vertex.cex=1.5,label=rolelab,
+displaylabels=T,vertex.col="role")
+par(op)
+```
+
