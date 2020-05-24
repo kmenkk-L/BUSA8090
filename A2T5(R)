@@ -1,0 +1,24 @@
+library(ggplot2)
+beef <- c(2,1,9,5,8,10,10,-22,-35,-30)
+pork <- c(1.5,1.5,10.5,5,6,10,9,-5,-35,-23)
+
+month <- c(1,1.5,2,2.5,3,3.5,4,4.5,5,5.5)
+d1 <- data.frame(beef,pork,month)
+
+production <- ggplot()+
+  geom_line(data=d1,aes(x=month,y=beef,colour="beef"),size=1)+
+  geom_line(data=d1,aes(x=month,y=pork,colour="pork"),size=1)+
+  scale_colour_manual("",values=c("beef"="green","pork"="blue"))+
+  xlab("Month")+ylab("% change on a year earlier ")+
+  theme(text=element_text(size=13, family="Comic Sans MS"), panel.background = element_blank(),axis.line=element_line(colour="black"))+
+  ggtitle("Prime cuts",subtitle="United States,meat industry, 2020, % change on a year earlier")+
+  labs(caption = "Sources:USDA; CoBank")+
+  geom_hline(aes(yintercept=0),colour="red")+
+  geom_hline(aes(yintercept=10),colour="grey")+
+  geom_hline(aes(yintercept=-10),colour="grey")+
+  geom_hline(aes(yintercept=-20),colour="grey")+
+  geom_hline(aes(yintercept=-30),colour="grey")+
+  annotate(geom="line",x=c(4,3.5),y=c(-15,-20),arrow=arrow(angle=20,length=unit(2,"mm")))+
+  annotate(geom="text",x=3,y=-25,label="impacted by Covid-19")
+
+production
